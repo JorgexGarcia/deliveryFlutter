@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if(!apiresponse.error){
 
-
+      Navigator.pushReplacementNamed(context, '/pedido');
 
     }else{
       Fluttertoast.showToast(msg: apiresponse.apiErrorMsg);
