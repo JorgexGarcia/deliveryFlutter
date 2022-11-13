@@ -30,8 +30,13 @@ class _DireccionesModalState extends State<DireccionesModal> {
             },
           ),
         ),
-        child: const  SafeArea(
-          child: Text('No hay direcciones disponibles')
+        child: SafeArea(
+          child: Container(
+            height: 100,
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(vertical: 50),
+            child: const Text('No hay direcciones disponibles')
+          )
         ),
       ),
     );
