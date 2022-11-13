@@ -1,8 +1,11 @@
+import 'package:delivery/models/api_response.dart';
+import 'package:delivery/pages/registro/provider/registro_provider.dart';
 import 'package:delivery/utils/colors/color.dart';
 import 'package:delivery/widgets/button_widget.dart';
 import 'package:delivery/widgets/input_widget.dart';
 import 'package:delivery/widgets/stack_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../widgets/backButton_widget.dart';
 
@@ -88,5 +91,37 @@ class _RegistroPageState extends State<RegistroPage> {
     );
   }
 
-  void _registrarUsuario() {}
+  void _registrarUsuario() async {
+
+    setState(() {
+      disabled = true;
+    });
+
+    Map<String, dynamic> cliente = {
+      'user' :{
+        'email' : emailCtrl.text,
+        'password' : passwordCtrl.text,
+      },
+      'role' : 'ROLE_CLIENTE',
+      'cliente' : {
+        'nombre' : nombreCtrl.text,
+        'apellidos' : apellidosCtrl.text,
+        'telefono' : telefonoCtrl.text
+      }
+    };
+
+    RegistroService registroService = RegistroService();
+
+    ApiResponse apiresponse = await registroService.registroUser(cliente);
+
+    if(!apiresponse.error){
+      Navigator.pop(context);
+    }else{
+      Fluttertoast.showToast(msg: apiresponse.apiErrorMsg);
+    }
+
+    setState(() {
+      disabled = false;
+    });
+  }
 }

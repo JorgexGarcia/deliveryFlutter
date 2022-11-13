@@ -1,8 +1,12 @@
+import 'package:delivery/pages/login/provider/login_provider.dart';
 import 'package:delivery/utils/colors/color.dart';
 import 'package:delivery/widgets/button_widget.dart';
 import 'package:delivery/widgets/input_widget.dart';
 import 'package:delivery/widgets/stack_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../models/api_response.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,12 +17,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  bool disabled = false;
+
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-
-    TextEditingController emailCtrl = TextEditingController();
-    TextEditingController passwordCtrl = TextEditingController();
-    bool disabled = false;
 
     return StackWidget(
       widgets: [
@@ -87,7 +92,32 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _loginUser() {
+  void _loginUser() async {
+
+    setState(() {
+      disabled = true;
+    });
+
+    Map<String, dynamic> user = {
+      'username' : emailCtrl.text,
+      'password' : passwordCtrl.text
+    };
+
+    LoginService loginService = LoginService();
+
+    ApiResponse apiresponse = await loginService.loginUser(user);
+
+    if(!apiresponse.error){
+
+
+
+    }else{
+      Fluttertoast.showToast(msg: apiresponse.apiErrorMsg);
+    }
+
+    setState(() {
+      disabled = false;
+    });
 
   }
 }
