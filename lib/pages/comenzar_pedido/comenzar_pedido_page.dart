@@ -1,3 +1,4 @@
+import 'package:delivery/models/direccion_model.dart';
 import 'package:delivery/pages/comenzar_pedido/modals/direcciones_modals.dart';
 import 'package:delivery/pages/comenzar_pedido/providers/pedido_provider.dart';
 import 'package:delivery/utils/colors/color.dart';
@@ -20,6 +21,9 @@ class _PedidoPageState extends State<PedidoPage> {
 
   late Future<Cliente> cliente;
   PedidoService pedidoService = PedidoService();
+
+  Direccion? direccionSelected;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,15 +62,21 @@ class _PedidoPageState extends State<PedidoPage> {
                           context: context,
                           builder: (context) =>
                             DireccionesModal(direcciones: snapshot.data!.direcciones!)
-
-                        );
+                        ).then((value) {
+                          if(value != null){
+                            setState((){
+                              direccionSelected = value;
+                            });
+                          }
+                        });
                       },
                       child: const Text('Seleccionar direccion',
                         style: TextStyle(
-                            color: gris,
+                            color:  Colors.green,
                             fontWeight: FontWeight.w400,
                             fontSize: 12))
-                    )
+                    ),
+                    _direccionSelect()
                   ],
                 );
               }
@@ -82,6 +92,31 @@ class _PedidoPageState extends State<PedidoPage> {
         altoImg: 0.45,
         altoContenedor: 0.6,
     );
+  }
+
+  Widget _direccionSelect() {
+    if(direccionSelected == null){
+      return SizedBox();
+    }else{
+      return Container(
+        margin: const EdgeInsets.only(top: 10),
+        child: Card(
+          color: Colors.orangeAccent,
+          child:  ListTile(
+            title: Text('${direccionSelected!.calle}, ${direccionSelected!.numero}, ${direccionSelected!.puertaPisoEscalera}'),
+            subtitle: Text('${direccionSelected!.provincia!.provincia}, ${direccionSelected!.municipio!.municipio}, ${direccionSelected!.codPostal}'),
+            trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: (){
+              setState(() {
+                direccionSelected = null;
+              });
+          },
+          ),
+          )
+        ),
+      );
+    }
   }
 }
 

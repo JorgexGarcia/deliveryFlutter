@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:delivery/models/provincia_model.dart';
 import 'package:delivery/utils/base_url.dart';
 import 'package:delivery/utils/shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
@@ -29,4 +30,21 @@ class PedidoService{
     }
   }
 
+  Future<List<Provincia>> getProvincias() async {
+    String token = await pref.userAccesToken;
+    
+    Response res = await get(Uri.parse('${baseUrl}provincias'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${token}'
+      }
+    );
+    if(res.statusCode == 200){
+      List<dynamic> jsonList = json.decode(res.body);
+      return List<Provincia>.from(jsonList.map((e) => Provincia.fromJson(e)));
+    }
+    else{
+      throw Exception('Error al traer las provincias');
+    }
+  }
 }
