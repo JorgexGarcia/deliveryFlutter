@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:delivery/models/municipio_model.dart';
 import 'package:delivery/models/provincia_model.dart';
 import 'package:delivery/utils/base_url.dart';
 import 'package:delivery/utils/shared_preferences/shared_preferences.dart';
@@ -42,6 +43,24 @@ class PedidoService{
     if(res.statusCode == 200){
       List<dynamic> jsonList = json.decode(res.body);
       return List<Provincia>.from(jsonList.map((e) => Provincia.fromJson(e)));
+    }
+    else{
+      throw Exception('Error al traer las provincias');
+    }
+  }
+
+  Future<List<Municipio>> getMunicipioByProvincia(int id) async {
+    String token = await pref.userAccesToken;
+
+    Response res = await get(Uri.parse('${baseUrl}municipios/provincia/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${token}'
+        }
+    );
+    if(res.statusCode == 200){
+      List<dynamic> jsonList = json.decode(res.body);
+      return List<Municipio>.from(jsonList.map((e) => Municipio.fromJson(e)));
     }
     else{
       throw Exception('Error al traer las provincias');
