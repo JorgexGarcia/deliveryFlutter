@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:delivery/models/municipio_model.dart';
 import 'package:delivery/pages/comenzar_pedido/providers/pedido_provider.dart';
 import 'package:delivery/utils/colors/color.dart';
+import 'package:delivery/widgets/button_widget.dart';
 import 'package:delivery/widgets/input_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,8 @@ class _AddDireccionModalState extends State<AddDireccionModal> {
                       }
                     }
                   ),
-                  _dropDownMunicipios()
+                  _dropDownMunicipios(),
+                  _createButton()
                 ],
               ),
             ),
@@ -167,6 +169,18 @@ class _AddDireccionModalState extends State<AddDireccionModal> {
             }).toList(),
           )
       ),
+    );
+  }
+
+  Widget _createButton() {
+    return ButtonWidget(
+        marginTop: 30,
+        texto: 'Guardar',
+        ancho: 0.9,
+        alto: 0.1,
+        onClick: (){
+
+        }
     );
   }
 }
